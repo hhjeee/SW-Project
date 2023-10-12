@@ -1,0 +1,20 @@
+#canvas {
+  width: 800px;
+  height: 400px;
+  border: 3px solid black;
+}
+#shapeDropdown {
+  margin: 10px;
+}
+#info {
+  width: 780px;
+  border: 3px solid black;
+  margin-top: 10px;
+  padding: 10px;
+}
+#properties {
+  width: 780px;
+  border: 3px solid black;
+  margin-top: 10px;
+  padding: 10px;
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.6/fabric.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Fabric.js with Canvas Example</title>
+  </head>
+  <body>
+    <div>
+      <select id="shapeDropdown">
+        <option value="image">Image</option>
+        <option value="text">Text</option>
+        <option value="line">Line</option>
+        <option value="rectangle">Rectangle</option>
+        <option value="circle">Circle</option>
+      </select>
+      <button onclick="createObject()">Create Object</button>
+    </div>
+    <canvas id="canvas" width="800" height="400"></canvas>
+
+    <div id="info">
+      <div id="size">가로: 세로:</div>
+      <div id="color">색상:</div>
+      <div id="position">X좌표: Y좌표: </div>
+    </div>
+
+    <label for="colorPicker">도형 색상 선택: </label>
+    <input type="color" id="colorPicker" value="#ff0000" />
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
