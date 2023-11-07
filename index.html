@@ -21,14 +21,27 @@
     <canvas id="canvas" width="800" height="400"></canvas>
 
     <div id="info">
-      <div id="size">가로: 세로:</div>
-      <div id="color">색상:</div>
-      <div id="position">X좌표: Y좌표: </div>
+      <label for="width">가로: </label>
+      <input type="number" id="width" />
+      <label for="height">세로: </label>
+      <input type="number" id="height" />
+      <br />
+      <label for="colorPicker">색상: </label>
+      <input type="color" id="colorPicker" value="#000000" />
+      <br />
+      <label for="xCoordinate">위치(X): </label>
+      <input type="number" id="xCoordinate" />
+      <label for="yCoordinate">위치(Y): </label>
+      <input type="number" id="yCoordinate" />
     </div>
 
-    <label for="colorPicker">도형 색상 선택: </label>
-    <input type="color" id="colorPicker" value="#ff0000" />
     </div>
+
+    <button onclick="moveToFront()">맨 앞으로</button>
+    <button onclick="moveToForward()">앞으로</button>
+    <button onclick="moveToBack()">맨 뒤로</button>
+    <button onclick="moveToBackward()">뒤로</button>
+
     <script src="app.js"></script>
   </body>
 </html>

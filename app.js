@@ -1,14 +1,13 @@
 const canvas = new fabric.Canvas("canvas");
 let selectedShape = "text";
 
-//
+// create part
 document
   .getElementById("shapeDropdown")
   .addEventListener("change", function (event) {
     selectedShape = event.target.value;
   });
 
-//-----create object-----
 function createObject() {
   const e = canvas.getPointer(canvas.upperCanvasEl);
   switch (selectedShape) {
@@ -79,58 +78,113 @@ function createCircle() {
   canvas.setActiveObject(circle);
   canvas.renderAll();
 }
-//----------
+// -- create part
 
-// --- z-order 변경 ---
-canvas.on("mouse:down", function (options) {
-  const selectedObject = options.target;
-  if (selectedObject) {
-    // 선택된 도형의 Z-order를 변경 -> 맨앞으로 이동
-    canvas.bringToFront(selectedObject);
-  }
-});
-// ------
+// update properties part
+function updateInput(selectedObject) {
+  const widthInput = document.getElementById("width");
+  const heightInput = document.getElementById("height");
+  const xCoordinateInput = document.getElementById("xCoordinate");
+  const yCoordinateInput = document.getElementById("yCoordinate");
+  const colorPicker = document.getElementById("colorPicker");
 
-function updateProperties(selectedObject) {
-  const sizeElement = document.getElementById("size");
-  const colorElement = document.getElementById("color");
-  const positionElement = document.getElementById("position");
-
-  // 선택된 object 없을때 값 나타내지 않기
   if (!selectedObject) {
-    sizeElement.innerText = "가로: 세로: ";
-    colorElement.innerText = "색상: ";
-    positionElement.innerText = "X좌표: Y좌표: ";
+    widthInput.value = "null";
+    heightInput.value = "null";
+    xCoordinateInput.value = "null";
+    yCoordinateInput.value = "null";
+    colorPicker.value = "#000000";
     return;
   }
 
-  // 선택된 object의 속성 창을 보여주기
-  sizeElement.innerText = `가로: ${selectedObject.getScaledWidth()} 세로: ${selectedObject.getScaledHeight()}`;
-  colorElement.innerText = `색상: ${selectedObject.fill || "없음"}`;
-  positionElement.innerText = `X좌표: ${selectedObject.left} Y좌표: ${selectedObject.top}`;
-}
-// ------
+  if (selectedObject && selectedObject.scaleX) {
+    const scaledWidth = selectedObject.getScaledWidth();
+    widthInput.value = Math.round(scaledWidth);
+  }
 
-// -- object의 크기가 변경되었을때 이를 받아옴 --
-canvas.on("object:scaling", function (options) {
-  const scaledObject = options.target;
-  updateProperties(scaledObject);
+  if (selectedObject && selectedObject.scaleX) {
+    const scaledHeight = selectedObject.getScaledHeight();
+    heightInput.value = Math.round(scaledHeight);
+  }
+
+  if (selectedObject) {
+    const xCoordinate = selectedObject.left;
+    xCoordinateInput.value = Math.round(xCoordinate);
+  }
+  if (selectedObject) {
+    const yCoordinate = selectedObject.top;
+    yCoordinateInput.value = Math.round(yCoordinate);
+  }
+}
+
+canvas.on("selection:cleared", function (options) {
+  updateInput(null);
 });
-// 선택된 object
 canvas.on("object:selected", function (options) {
   const selectedObject = options.target;
-  updateProperties(selectedObject);
+  colorPicker.value = selectedObject.fill;
+  updateInput(selectedObject);
 });
-// 선택된 object가 없을때
-canvas.on("selection:cleared", function (options) {
-  updateProperties(null);
+canvas.on("object:scaling", function (options) {
+  const scaledObject = options.target;
+  updateInput(scaledObject);
 });
 canvas.on("object:moving", function (options) {
   const movedObject = options.target;
-  updateProperties(movedObject);
+  updateInput(movedObject);
 });
 
-// ------
+document.getElementById("width").addEventListener("input", function (event) {
+  const newWidth = parseFloat(event.target.value);
+  if (!newWidth) {
+    newWidth = 1;
+  }
+
+  const activeObject = canvas.getActiveObject();
+
+  if (activeObject && !isNaN(newWidth)) {
+    //유효한 숫자인 경우
+    activeObject.set({ scaleX: newWidth / activeObject.width });
+    canvas.renderAll();
+    updateInput(activeObject);
+  }
+});
+document.getElementById("height").addEventListener("input", function (event) {
+  const newHeight = parseInt(event.target.value, 10);
+  if (!newHeight) {
+    newHeight = 1;
+  }
+  const activeObject = canvas.getActiveObject();
+  if (activeObject && !isNaN(newHeight)) {
+    activeObject.set({ scaleY: newHeight / activeObject.height });
+    canvas.renderAll();
+    updateInput(activeObject);
+  }
+});
+document
+  .getElementById("xCoordinate")
+  .addEventListener("input", function (event) {
+    const newXCoordinate = parseInt(event.target.value, 10);
+
+    const activeObject = canvas.getActiveObject();
+    if (activeObject && !isNaN(newXCoordinate)) {
+      activeObject.set({ left: newXCoordinate });
+      canvas.renderAll();
+      updateInput(activeObject);
+    }
+  });
+document
+  .getElementById("yCoordinate")
+  .addEventListener("input", function (event) {
+    const newYCoordinate = parseInt(event.target.value, 10);
+
+    const activeObject = canvas.getActiveObject();
+    if (activeObject && !isNaN(newYCoordinate)) {
+      activeObject.set({ top: newYCoordinate });
+      canvas.renderAll();
+      updateInput(activeObject);
+    }
+  });
 document
   .getElementById("colorPicker")
   .addEventListener("input", function (event) {
@@ -143,3 +197,32 @@ document
       updateProperties(activeObject);
     }
   });
+// update properties part
+
+// z-order part
+function moveToFront() {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    canvas.bringToFront(activeObject); //맨 앞으로
+  }
+}
+function moveToForward() {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    canvas.bringForward(activeObject); //한 칸 앞으로
+  }
+}
+
+function moveToBack() {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    canvas.sendToBack(activeObject); // 맨 뒤로
+  }
+}
+function moveToBackward() {
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    canvas.sendBackwards(activeObject); //한 칸 뒤로
+  }
+}
+// -- z-order part
