@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Graphic Drawing</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <button id="drawRectangle">사각형</button>
+    <button id="drawCircle">원</button>
+    <canvas id="drawingCanvas" width="800" height="500"></canvas>
+    <br><br><br><br>
+    <div id="properties">
+        <label for="width">가로 크기 </label>
+        <input type="number" id="width" />
+        <label for="height">세로 크기</label>
+        <input type="number" id="height" />
+        <br>
+        <label for="colorPicker">색상: </label>
+        <input type="color" id="colorPicker" value="#000000" />
+        <br>
+        <label for="xCoordinate">위치(X): </label>
+        <input type="number" id="xCoordinate" />
+        <label for="yCoordinate">위치(Y): </label>
+        <input type="number" id="yCoordinate" />
+        <br>
+        <label for="Zorder">순서(Zorder): </label>
+        <input type="number" id="Zorder" />
+    </div>
+  
+    <script src="Drawingstate.js"></script>
+    <script src="DrawingController.js"></script>
+    <script src="MouseState.js"></script>
+    <script src="view.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
