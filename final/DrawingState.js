@@ -120,7 +120,7 @@ class Ellipse extends Shape {
 
 class Line extends Shape {
   constructor(x, y, length, color) {
-    super(x, y, length, 0, color);
+    super(x, y, length, 10, color);
   }
 
   draw(context) {
@@ -146,7 +146,7 @@ class Line extends Shape {
 
   containsPoint(x, y) {
     return (
-      x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + 1
+      x >= this.x && x <= this.x + this.width && y >= this.y - this.height/2 && y <= this.y + this.height/2
     );
   }
 }
