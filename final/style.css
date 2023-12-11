@@ -1,0 +1,116 @@
+body {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 0.5fr 3fr 1fr;
+}
+
+#draw {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid lightgray;
+  padding: 10px 20px;
+}
+#draw button {
+  margin-right: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0;
+  border-radius: 10px;
+  background-color: transparent;
+}
+#draw button:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.canvas-background {
+  grid-column: 2/3;
+  grid-row: 2/4;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#drawingCanvas {
+  background-color: #ffffff;
+  margin: 20px 0;
+}
+
+#properties {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  padding: 0 10px;
+  border-bottom: 2px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.size,
+.location {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.size > div,
+.location > div {
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+}
+
+#width,
+#height,
+#xCoordinate,
+#yCoordinate {
+  height: 25px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+#colorPicker {
+  border: none;
+  background-color: transparent;
+  width: 50px;
+  height: 50px;
+}
+#colorPicker::-webkit-color-swatch {
+  border-radius: 100%;
+  border: none;
+}
+
+#ZOrder {
+  grid-column: 1/2;
+  grid-row: 3/4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+#ZOrder button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  width: 100px;
+  height: 35px;
+}
+
+#ZOrder button:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+#ZOrder img {
+  margin-right: 8px;
+}

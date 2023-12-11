@@ -3,43 +3,99 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Vector Graphic Drawing</title>
-    <style>
-      canvas {
-        border: 1px solid black;
-      }
-    </style>
   </head>
   <body>
-    <button id="drawRectangle">Rectangle</button>
-    <button id="drawEllipse">Ellipse</button>
-    <button id="drawLine">Line</button>
-    <button id="drawText">Text</button>
-    <canvas id="drawingCanvas" width="800" height="500"></canvas>
-    <br /><br /><br /><br />
-    <div id="properties">
-      <label for="width">가로 크기 </label>
-      <input type="number" id="width" />
-      <label for="height">세로 크기</label>
-      <input type="number" id="height" />
-      <br />
-      <label for="colorPicker">색상: </label>
-      <input type="color" id="colorPicker" value="#000000" />
-      <br />
-      <label for="xCoordinate">위치(X): </label>
-      <input type="number" id="xCoordinate" />
-      <label for="yCoordinate">위치(Y): </label>
-      <input type="number" id="yCoordinate" />
-      <br />
-      <!-- <label for="Zorder">순서(Zorder): </label>
-      <input type="number" id="Zorder" /> -->
-    </div>
+    <div class="container">
+      <div id="draw">
+        <button id="drawRectangle">
+          <svg width="50" height="50">
+            <rect x="2.5" y="2.5" width="45" height="45" fill="gray" />
+          </svg>
+        </button>
+        <button id="drawEllipse">
+          <svg width="50" height="50">
+            <circle cx="25" cy="25" r="25" fill="gray" />
+          </svg>
+        </button>
+        <button id="drawLine">
+          <svg width="50" height="50">
+            <line
+              x1="5"
+              y1="5"
+              x2="45"
+              y2="45"
+              stroke="gray"
+              stroke-width="3"
+            />
+          </svg>
+        </button>
+        <button id="drawText">
+          <svg width="50" height="50">
+            <text x="5" y="30" fill="gray" font-size="20">Text</text>
+          </svg>
+        </button>
+      </div>
+      <div class="canvas-background">
+        <canvas id="drawingCanvas" width="800" height="500"></canvas>
+      </div>
 
-    <div id="ZOrder">
-      <button id="moveToFront">맨 앞으로</button>
-      <button id="moveToForward">앞으로</button>
-      <button id="moveToBack">맨 뒤로</button>
-      <button id="moveToBackward">뒤로</button>
+      <div id="properties">
+        <div class="size">
+          <div>
+            <label for="width">가로 크기</label>
+            <input type="number" id="width" />
+          </div>
+          <div>
+            <label for="height">세로 크기</label>
+            <input type="number" id="height" />
+          </div>
+        </div>
+        <div class="location">
+          <div>
+            <label for="xCoordinate">위치(X)</label>
+            <input type="number" id="xCoordinate" />
+          </div>
+          <div>
+            <label for="yCoordinate">위치(Y)</label>
+            <input type="number" id="yCoordinate" />
+          </div>
+        </div>
+        <label for="colorPicker">색상</label>
+        <input type="color" id="colorPicker" value="#000000" />
+      </div>
+
+      <div id="ZOrder">
+        <button id="moveToFront">
+          <img
+            src="assets/front.png"
+            alt="PNG Image"
+            width="20"
+            height="20"
+          />맨 앞으로
+        </button>
+        <button id="moveToForward">
+          <img
+            src="assets/forward.png"
+            alt="PNG Image"
+            width="20"
+            height="20"
+          />앞으로
+        </button>
+        <button id="moveToBack">
+          <img src="assets/back.png" alt="PNG Image" width="20" height="20" />맨
+          뒤로
+        </button>
+        <button id="moveToBackward">
+          <img
+            src="assets/backward.png"
+            alt="PNG Image"
+            width="20"
+            height="20"
+          />뒤로
+        </button>
+      </div>
     </div>
 
     <script src="Drawingstate.js"></script>
