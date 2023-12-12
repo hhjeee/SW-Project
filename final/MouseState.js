@@ -59,8 +59,7 @@ class DragState extends MouseState {
 
     // 선택된 모든 도형을 이동시킵니다.
     this.selectedShapes.forEach((shape) => {
-      shape.x += dx;
-      shape.y += dy;
+      shape.move(dx, dy);
     });
 
     this.startX = event.clientX;

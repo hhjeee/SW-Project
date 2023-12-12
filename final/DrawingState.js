@@ -20,6 +20,51 @@ class Shape {
     // 기본적인 구현. 하위 클래스에서 오버라이드됨
     return false;
   }
+
+  move(dx, dy) {
+    // 도형을 이동시키는 로직
+    this.x += dx;
+    this.y += dy;
+  }
+}
+
+class CompositeShape extends Shape {
+  constructor() {
+    super(0, 0, 0, 0, "#000000"); // CompositeShape의 위치, 크기, 색상은 의미가 없으므로 임의로 설정
+    this.children = [];
+  }
+
+  addChild(shape) {
+    this.children.push(shape);
+  }
+
+  removeChild(shape) {
+    const index = this.children.indexOf(shape);
+    if (index !== -1) {
+      this.children.splice(index, 1);
+    }
+  }
+
+  draw(context) {
+    this.children.forEach((shape) => shape.draw(context));
+  }
+
+  /*drawResizeHandles(context) {
+    // CompositeShape는 조절점을 그릴 필요가 없음
+  }
+
+  containsPoint(x, y) {
+    // CompositeShape는 포함 여부를 판단할 필요가 없음
+    return false;
+  }*/
+  containsPoint(x, y) {
+    // CompositeShape 내부의 모든 도형에 대해 포함 여부를 확인합니다.
+    return this.children.some((shape) => shape.containsPoint(x, y));
+  }
+  move(dx, dy) {
+    // Composite 내의 모든 도형을 이동시키는 로직
+    this.shapes.forEach((shape) => shape.move(dx, dy));
+  }
 }
 
 class Rectangle extends Shape {
@@ -146,7 +191,10 @@ class Line extends Shape {
 
   containsPoint(x, y) {
     return (
-      x >= this.x && x <= this.x + this.width && y >= this.y - this.height/2 && y <= this.y + this.height/2
+      x >= this.x &&
+      x <= this.x + this.width &&
+      y >= this.y - this.height / 2 &&
+      y <= this.y + this.height / 2
     );
   }
 }
