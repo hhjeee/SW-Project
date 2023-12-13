@@ -15,8 +15,4 @@ class MoveCommand extends Command {
 
     this.controller.draw();
   }
-
-  undo() {
-    this.controller.draw();
-  }
 }

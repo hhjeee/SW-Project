@@ -1,15 +1,11 @@
 class SelectState extends MouseState {
   onMouseDown(event, selectedShapes) {
     if (this.controller.selectedShapes.length > 0) {
-      // this.controller.selectedShape = null;
-      // this.controller.draw();
-
       this.controller.selectedShapes = selectedShapes;
       this.controller.draw();
 
       this.controller.switchToDragState();
       this.controller.mouseState.onMouseDown(event, selectedShapes);
-      // this.controller.updateProperties();
     } else {
       this.controller.selectedShape = null;
       this.controller.draw();

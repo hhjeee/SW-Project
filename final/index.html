@@ -36,9 +36,6 @@
             <text x="5" y="30" fill="gray" font-size="20">Text</text>
           </svg>
         </button>
-        <button id="undoButton">
-          <img src="assets/undo.png" alt="PNG Image" width="50" height="50" />
-        </button>
       </div>
       <div class="canvas-background">
         <canvas id="drawingCanvas" width="800" height="500"></canvas>
@@ -101,12 +98,18 @@
       </div>
     </div>
 
-    <script src="Drawingstate.js"></script>
-    <script src="DrawingController.js"></script>
-    <script src="view.js"></script>
     <script src="script.js"></script>
+    <script src="view.js"></script>
+    <script src="Shape.js"></script>
     <script src="ShapeFactory.js"></script>
     <script src="Observe.js"></script>
+
+    <script src="controller/DrawingController.js"></script>
+    <script src="controller/Find.js"></script>
+    <script src="controller/MouseEvents.js"></script>
+    <script src="controller/Properties.js"></script>
+    <script src="controller/Shapes.js"></script>
+    <script src="controller/Zorder.js"></script>
 
     <script src="command/command.js"></script>
     <script src="command/zOrderCommand.js"></script>
@@ -119,7 +122,5 @@
     <script src="state/SelectState.js"></script>
     <script src="state/DragState.js"></script>
     <script src="state/ResizeState.js"></script>
-
-    <script src="observer/ButtonObserver.js"></script>
   </body>
 </html>

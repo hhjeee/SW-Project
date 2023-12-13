@@ -1,4 +1,3 @@
-// DrawingState.js
 let shapeIdCounter = 0;
 
 class Shape {
@@ -12,17 +11,13 @@ class Shape {
     this.color = color;
   }
 
-  draw(context, shape) {
-    throw new Error("This method must be implemented");
-  }
+  draw(context, shape) {}
 
   containsPoint(x, y) {
-    // 기본적인 구현. 하위 클래스에서 오버라이드됨
     return false;
   }
 
   move(dx, dy) {
-    // 도형을 이동시키는 로직
     this.x += dx;
     this.y += dy;
   }
@@ -30,7 +25,7 @@ class Shape {
 
 class CompositeShape extends Shape {
   constructor() {
-    super(0, 0, 0, 0, "#000000"); // CompositeShape의 위치, 크기, 색상은 의미가 없으므로 임의로 설정
+    super(0, 0, 0, 0, "#000000");
     this.children = [];
   }
 
@@ -49,20 +44,10 @@ class CompositeShape extends Shape {
     this.children.forEach((shape) => shape.draw(context));
   }
 
-  /*drawResizeHandles(context) {
-    // CompositeShape는 조절점을 그릴 필요가 없음
-  }
-
   containsPoint(x, y) {
-    // CompositeShape는 포함 여부를 판단할 필요가 없음
-    return false;
-  }*/
-  containsPoint(x, y) {
-    // CompositeShape 내부의 모든 도형에 대해 포함 여부를 확인합니다.
     return this.children.some((shape) => shape.containsPoint(x, y));
   }
   move(dx, dy) {
-    // Composite 내의 모든 도형을 이동시키는 로직
     this.shapes.forEach((shape) => shape.move(dx, dy));
   }
 }
@@ -205,16 +190,13 @@ class Text extends Shape {
     this.text = text;
     this.color = color;
   }
-  
+
   calculateFontSize() {
-    // 경계 박스에 맞는 폰트 크기를 계산합니다.
-    // 이는 예시일 뿐, 실제로 적절한 로직이 필요합니다.
     return Math.min(this.width, this.height);
   }
 
-
   draw(context) {
-    context.textBaseline = 'top'; // 이렇게 설정하면 y 좌표가 텍스트의 상단을 가리킵니다.
+    context.textBaseline = "top";
     context.fillStyle = this.color;
     context.font = this.calculateFontSize() + "px Arial";
     context.fillText(this.text, this.x, this.y);

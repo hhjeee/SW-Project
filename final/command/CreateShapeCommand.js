@@ -13,14 +13,6 @@ class AddRectangleCommand extends Command {
     this.controller.shapes.push(this.addedShape);
     this.controller.draw();
   }
-
-  undo() {
-    const index = this.controller.shapes.indexOf(this.addedShape);
-    if (index !== -1) {
-      this.controller.shapes.splice(index, 1);
-      this.controller.draw();
-    }
-  }
 }
 
 class AddEllipseCommand extends Command {
@@ -37,14 +29,6 @@ class AddEllipseCommand extends Command {
     this.addedShape.zOrder = this.controller.shapes.length;
     this.controller.shapes.push(this.addedShape);
     this.controller.draw();
-  }
-
-  undo() {
-    const index = this.controller.shapes.indexOf(this.addedShape);
-    if (index !== -1) {
-      this.controller.shapes.splice(index, 1);
-      this.controller.draw();
-    }
   }
 }
 
@@ -63,14 +47,6 @@ class AddLineCommand extends Command {
     this.controller.shapes.push(this.addedShape);
     this.controller.draw();
   }
-
-  undo() {
-    const index = this.controller.shapes.indexOf(this.addedShape);
-    if (index !== -1) {
-      this.controller.shapes.splice(index, 1);
-      this.controller.draw();
-    }
-  }
 }
 
 class AddTextCommand extends Command {
@@ -84,17 +60,8 @@ class AddTextCommand extends Command {
 
   execute() {
     this.addedShape = this.shapeFactory.createText(this.shapeParams);
-    console.log(this.addedShape.x);
     this.addedShape.zOrder = this.controller.shapes.length;
     this.controller.shapes.push(this.addedShape);
     this.controller.draw();
-  }
-
-  undo() {
-    const index = this.controller.shapes.indexOf(this.addedShape);
-    if (index !== -1) {
-      this.controller.shapes.splice(index, 1);
-      this.controller.draw();
-    }
   }
 }

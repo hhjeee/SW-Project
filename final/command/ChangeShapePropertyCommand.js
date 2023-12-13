@@ -13,9 +13,4 @@ class ChangeShapePropertyCommand extends Command {
     this.shape[this.propertyName] = this.newValue;
     this.controller.draw();
   }
-
-  undo() {
-    this.shape[this.propertyName] = this.previousValue;
-    this.controller.draw();
-  }
 }

@@ -5,7 +5,7 @@ class DragState extends MouseState {
     this.selectedShapes = selectedShapes;
 
     this.moveCommand = new MoveCommand(this.controller, selectedShapes, 0, 0);
-    //this.moveCommand.execute();
+    this.moveCommand.execute();
   }
 
   onMouseMove(event) {
@@ -23,18 +23,6 @@ class DragState extends MouseState {
     this.startY = event.clientY;
 
     this.controller.draw();
-    // this.controller.updateProperties();
-    
-    // if (this.controller.selectedShape) {
-    //   const dx = event.clientX - this.startX;
-    //   const dy = event.clientY - this.startY;
-    //   this.controller.selectedShape.x += dx;
-    //   this.controller.selectedShape.y += dy;
-    //   this.startX = event.clientX;
-    //   this.startY = event.clientY;
-    //   this.controller.draw();
-    //   this.controller.updateProperties(this.controller.selectedShape);
-    // }
   }
 
   onMouseUp(event) {

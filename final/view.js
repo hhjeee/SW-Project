@@ -1,4 +1,3 @@
-// DrawingView.js
 class DrawingView {
   constructor() {
     this.canvas = document.getElementById("drawingCanvas");

@@ -1,4 +1,3 @@
-// MoveToFrontCommand.js
 class MoveToFrontCommand extends Command {
   constructor(controller, shape) {
     super();
@@ -24,13 +23,8 @@ class MoveToFrontCommand extends Command {
       this.controller.draw();
     }
   }
-
-  undo() {
-    this.controller.draw();
-  }
 }
 
-// MoveToForwardCommand.js
 class MoveToForwardCommand extends Command {
   constructor(controller, shape) {
     super();
@@ -42,11 +36,9 @@ class MoveToForwardCommand extends Command {
   execute() {
     if (this.shape.length == 1) {
       if (this.shape[0].zOrder < this.controller.shapes.length - 1) {
-        // 선택된 도형이 이미 가장 앞에 있는 것이 아니라면, 한 단계 앞으로 이동
         const currentIndex = this.controller.shapes.indexOf(this.shape[0]);
         const nextIndex = currentIndex + 1;
 
-        // Z-순서 값을 교환
         [this.shape[0].zOrder, this.controller.shapes[nextIndex].zOrder] = [
           this.controller.shapes[nextIndex].zOrder,
           this.shape[0].zOrder,
@@ -56,14 +48,8 @@ class MoveToForwardCommand extends Command {
       }
     }
   }
-
-  undo() {
-    this.shape.zOrder = this.previousZOrder;
-    this.controller.draw();
-  }
 }
 
-// MoveToBackCommand.js
 class MoveToBackCommand extends Command {
   constructor(controller, shape) {
     super();
@@ -85,17 +71,8 @@ class MoveToBackCommand extends Command {
       this.controller.draw();
     }
   }
-
-  undo() {
-    //this.shape.zOrder = this.previousZOrder;
-    this.controller.shapes.forEach((shape, index) => {
-      shape.zOrder = this.previousZOrders[index];
-    });
-    this.controller.draw();
-  }
 }
 
-// MoveToBackwardCommand.js
 class MoveToBackwardCommand extends Command {
   constructor(controller, shape) {
     super();
@@ -118,10 +95,5 @@ class MoveToBackwardCommand extends Command {
         this.controller.draw();
       }
     }
-  }
-
-  undo() {
-    this.shape.zOrder = this.previousZOrder;
-    this.controller.draw();
   }
 }
