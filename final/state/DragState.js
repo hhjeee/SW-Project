@@ -23,6 +23,7 @@ class DragState extends MouseState {
     this.startY = event.clientY;
 
     this.controller.draw();
+    this.controller.updateProperties();
     // if (this.controller.selectedShape) {
     //   const dx = event.clientX - this.startX;
     //   const dy = event.clientY - this.startY;

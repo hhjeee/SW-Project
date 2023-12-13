@@ -70,6 +70,7 @@ class ResizeState extends MouseState {
     this.startX = event.clientX;
     this.startY = event.clientY;
     this.controller.draw();
+    this.controller.updateProperties();
   }
 
   onMouseUp(event) {

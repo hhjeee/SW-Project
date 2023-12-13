@@ -199,16 +199,18 @@ class DrawingController {
     const color = document.getElementById("colorPicker");
     //const zOrder = document.getElementById("Zorder");
 
-    if (this.selectedShapes.length == 1) {
-      const selectedShape = this.selectedShapes[0];
+    const selectedShapes = this.compositeShape.children;
 
-      widthInput.value = Math.round(this.selectedShape.width);
-      heightInput.value = Math.round(this.selectedShape.height);
+    if (selectedShapes.length == 1) {
+      const selectedShape = selectedShapes[0];
 
-      xCoordinateInput.value = Math.round(this.selectedShape.x);
-      yCoordinateInput.value = Math.round(this.selectedShape.y);
+      widthInput.value = Math.round(selectedShape.width);
+      heightInput.value = Math.round(selectedShape.height);
 
-      color.value = this.selectedShape.color;
+      xCoordinateInput.value = Math.round(selectedShape.x);
+      yCoordinateInput.value = Math.round(selectedShape.y);
+
+      color.value = selectedShape.color;
       //zOrder.value = this.selectedShape.zOrder;
     } else {
       widthInput.value = "";
