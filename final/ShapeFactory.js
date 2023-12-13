@@ -1,5 +1,3 @@
-// ShapeFactory.js
-
 // Abstract Factory
 class ShapeFactory {
   createRectangle(x, y, width, height, color) {}

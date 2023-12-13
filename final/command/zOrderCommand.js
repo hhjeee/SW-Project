@@ -1,50 +1,9 @@
-// Command.js
-class Command {
-  execute() {}
-  undo() {}
-}
-
-/*// CreateShapeCommand.js
-class CreateShapeCommand extends Command {
-  constructor(controller, shape) {
-    super();
-    this.controller = controller;
-    this.shape = shape;
-  }
-
-  execute() {
-    this.controller.addShape(this.shape);
-  }
-
-  undo() {
-    this.controller.removeShape(this.shape);
-  }
-}
-
-// DeleteShapeCommand.js
-class DeleteShapeCommand extends Command {
-  constructor(controller, shape) {
-    super();
-    this.controller = controller;
-    this.shape = shape;
-  }
-
-  execute() {
-    this.controller.removeShape(this.shape);
-  }
-
-  undo() {
-    this.controller.addShape(this.shape);
-  }
-}*/
-
 // MoveToFrontCommand.js
 class MoveToFrontCommand extends Command {
   constructor(controller, shape) {
     super();
     this.controller = controller;
     this.shape = shape;
-    this.previousZOrder = shape.zOrder;
   }
 
   execute() {
@@ -67,7 +26,6 @@ class MoveToFrontCommand extends Command {
   }
 
   undo() {
-    this.shape.zOrder = this.previousZOrder;
     this.controller.draw();
   }
 }
@@ -129,7 +87,10 @@ class MoveToBackCommand extends Command {
   }
 
   undo() {
-    this.shape.zOrder = this.previousZOrder;
+    //this.shape.zOrder = this.previousZOrder;
+    this.controller.shapes.forEach((shape, index) => {
+      shape.zOrder = this.previousZOrders[index];
+    });
     this.controller.draw();
   }
 }

@@ -112,7 +112,6 @@ class Ellipse extends Shape {
   draw(context, shape) {
     context.beginPath();
     context.fillStyle = this.color;
-    //context.arc(this.x, this.y, this.width / 2, 0, 2 * Math.PI);
     context.ellipse(
       this.x,
       this.y,
@@ -122,7 +121,6 @@ class Ellipse extends Shape {
       0,
       2 * Math.PI
     );
-
     context.fill();
   }
 

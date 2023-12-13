@@ -9,7 +9,6 @@ class DrawingController {
     this.selectState = new SelectState(this);
     this.dragState = new DragState(this);
     this.resizeState = new ResizeState(this);
-    // 초기 상태 설정
     this.mouseState = this.defaultState;
 
     this.initializeButtons();
@@ -17,11 +16,7 @@ class DrawingController {
     this.getZorderClick();
     this.setupMouseEvents();
 
-    ////
-
-    // Abstract Factory 사용
     this.shapeFactory = new ConcreteShapeFactory();
-    //this.mouseStateFactory = new ConcreteMouseStateFactory();
     this.compositeShape = new CompositeShape();
 
     this.commandStack = [];
@@ -30,9 +25,40 @@ class DrawingController {
     this.moveToForwardCommand;
     this.moveToBackCommand;
     this.moveToBackwardCommand;
+    this.ChangeShapePropertyCommand;
+    this.createShapeCommand;
 
-    // 초기 상태 설정
-    //this.mouseState = this.mouseStateFactory.createDefaultState(this);
+    this.AddRectangleCommand;
+    this.AddEllipseCommand;
+    this.AddLineCommand;
+
+    this.MoveCommand;
+    this.ResizeCommand;
+
+    this.buttonObservers = [];
+
+    const undoButton = document.getElementById("undoButton");
+    undoButton.addEventListener("click", () => this.undo());
+  }
+
+  setMouseState(newState) {
+    this.mouseState = newState;
+  }
+
+  switchToDefaultState() {
+    this.setMouseState(this.defaultState);
+  }
+
+  switchToSelectState() {
+    this.setMouseState(this.selectState);
+  }
+
+  switchToDragState() {
+    this.setMouseState(this.dragState);
+  }
+
+  switchToResizeState() {
+    this.setMouseState(this.resizeState);
   }
 
   //composite
@@ -49,7 +75,7 @@ class DrawingController {
   setupMouseEvents() {
     this.view.canvas.addEventListener("mousedown", (event) => {
       const handle = this.findResizeHandle(event);
-
+      console.log(handle);
       if (handle) {
         this.switchToResizeState();
         this.mouseState.onMouseDown(
@@ -98,29 +124,55 @@ class DrawingController {
     const y = event.clientY - rect.top;
 
     let handle_output = null;
-    const handleSize = 8; // 조절점 크기 (예시)
+    const handleSize = 8;
     let selectedShapes = this.selectedShapes;
 
     if (selectedShapes.length == 0) return null;
+    let handles = {};
 
     selectedShapes.forEach((selectedShape) => {
       // 조절점 위치 계산
-      const handles = {
-        "top-left": { x: selectedShape.x, y: selectedShape.y },
-        "top-right": {
-          x: selectedShape.x + selectedShape.width,
-          y: selectedShape.y,
-        },
-        "bottom-left": {
-          x: selectedShape.x,
-          y: selectedShape.y + selectedShape.height,
-        },
-        "bottom-right": {
-          x: selectedShape.x + selectedShape.width,
-          y: selectedShape.y + selectedShape.height,
-        },
-      };
 
+      if (selectedShape instanceof Ellipse) {
+        // 원의 경우, 각 사분면의 중간 지점에 조절점 표시
+        const middleX = selectedShape.x;
+        const middleY = selectedShape.y;
+
+        handles = {
+          "top-left": {
+            x: middleX - selectedShape.width / 2,
+            y: middleY - selectedShape.height / 2,
+          },
+          "top-right": {
+            x: middleX + selectedShape.width / 2,
+            y: middleY - selectedShape.height / 2,
+          },
+          "bottom-left": {
+            x: middleX - selectedShape.width / 2,
+            y: middleY + selectedShape.height / 2,
+          },
+          "bottom-right": {
+            x: middleX + selectedShape.width / 2,
+            y: middleY + selectedShape.height / 2,
+          },
+        };
+      } else {
+        handles = {
+          "top-left": { x: selectedShape.x, y: selectedShape.y },
+          "top-right": {
+            x: selectedShape.x + selectedShape.width,
+            y: selectedShape.y,
+          },
+          "bottom-left": {
+            x: selectedShape.x,
+            y: selectedShape.y + selectedShape.height,
+          },
+          "bottom-right": {
+            x: selectedShape.x + selectedShape.width,
+            y: selectedShape.y + selectedShape.height,
+          },
+        };
+      }
       // 각 조절점에 대해 클릭된 지점이 조절점 영역 내에 있는지 확인
       for (const handle in handles) {
         const hx = handles[handle].x;
@@ -131,7 +183,6 @@ class DrawingController {
           y >= hy - handleSize / 2 &&
           y <= hy + handleSize / 2
         ) {
-          console.log(handle);
           handle_output = handle; // 해당 조절점 식별자 반환
         }
       }
@@ -185,104 +236,52 @@ class DrawingController {
     return null;
   }
 
-  setMouseState(newState) {
-    this.mouseState = newState;
-  }
-
-  switchToDefaultState() {
-    this.setMouseState(this.defaultState);
-  }
-
-  switchToSelectState() {
-    this.setMouseState(this.selectState);
-  }
-
-  switchToDragState() {
-    this.setMouseState(this.dragState);
-  }
-
-  switchToResizeState() {
-    this.setMouseState(this.resizeState);
-  }
-
-  initializeButtons() {
-    const rectangleButton = document.getElementById("drawRectangle");
-    const EllipseButton = document.getElementById("drawEllipse");
-    const lineButton = document.getElementById("drawLine");
-    //const TextButton = document.getElementById("drawText");
-
-    rectangleButton.addEventListener(
-      "click",
-      this.handleRectangleClick.bind(this)
-    );
-    EllipseButton.addEventListener("click", this.handleEllipseClick.bind(this));
-    lineButton.addEventListener("click", this.handleLineClick.bind(this));
-    //TextButton.addEventListener("click", this.handleTextClick.bind(this));
-  }
-
   ////////속성창 변경 추가
   getPropertiesInput() {
-    //필요하다면 다 다른 함수로 분리해도 될듯
     document
       .getElementById("width")
-      .addEventListener("change", (event) => this.handleWidthInput(event));
+      .addEventListener("change", (event) =>
+        this.changeShapeProperty("width", parseInt(event.target.value, 10))
+      );
 
     document
       .getElementById("height")
-      .addEventListener("change", (event) => this.handleHeightInput(event));
+      .addEventListener("change", (event) =>
+        this.changeShapeProperty("height", parseInt(event.target.value, 10))
+      );
 
     document
       .getElementById("xCoordinate")
-      .addEventListener("change", (event) => this.handleXInput(event));
+      .addEventListener("change", (event) =>
+        this.changeShapeProperty("x", parseInt(event.target.value, 10))
+      );
 
     document
       .getElementById("yCoordinate")
-      .addEventListener("change", (event) => this.handleYInput(event));
+      .addEventListener("change", (event) =>
+        this.changeShapeProperty("y", parseInt(event.target.value, 10))
+      );
 
     document
       .getElementById("colorPicker")
-      .addEventListener("input", (event) => this.handleColorInput(event));
+      .addEventListener("input", (event) =>
+        this.changeShapeProperty("color", event.target.value)
+      );
   }
 
-  handleWidthInput(event) {
-    const newWidth = parseInt(event.target.value, 10);
-    if (this.selectedShapes.length == 1) {
-      this.selectedShapes[0].width = newWidth;
-      this.draw();
+  changeShapeProperty(propertyName, newValue) {
+    if (this.selectedShapes.length === 1) {
+      const changePropertyCommand = new ChangeShapePropertyCommand(
+        this,
+        this.selectedShapes[0],
+        propertyName,
+        newValue
+      );
+      changePropertyCommand.execute();
+      this.commandStack.push(changePropertyCommand);
     }
   }
-  handleHeightInput(event) {
-    const newHeight = parseInt(event.target.value, 10);
-    if (this.selectedShapes.length == 1) {
-      this.selectedShapes[0].height = newHeight;
-      this.draw();
-    }
-  }
-  handleXInput(event) {
-    const newXCoordinate = parseInt(event.target.value, 10);
 
-    if (this.selectedShapes.length == 1) {
-      this.selectedShapes[0].x = newXCoordinate;
-      this.draw();
-    }
-  }
-  handleYInput(event) {
-    const newYCoordinate = parseInt(event.target.value, 10);
-
-    if (this.selectedShapes.length == 1) {
-      this.selectedShapes[0].y = newYCoordinate;
-      this.draw();
-    }
-  }
-  handleColorInput(event) {
-    const newColor = event.target.value;
-
-    if (this.selectedShapes.length == 1) {
-      this.selectedShapes[0].color = newColor;
-      this.draw();
-    }
-  }
-  ////////////////
   ////z-order변경
   getZorderClick() {
     document.getElementById("moveToFront").addEventListener("click", () => {
@@ -308,7 +307,7 @@ class DrawingController {
     this.commandStack.push(this.moveToFrontCommand);
   }
   moveToForward() {
-    this.oveToForwardCommandm = new MoveToForwardCommand(
+    this.moveToForwardCommand = new MoveToForwardCommand(
       this,
       this.selectedShapes
     );
@@ -330,32 +329,51 @@ class DrawingController {
   }
 
   ////////////////
-
-  /*handleRectangleClick() {
-    this.addShape(
-      new Rectangle(
-        Math.random() * (this.view.canvas.width - 100),
-        Math.random() * (this.view.canvas.height - 100),
-        100,
-        100,
-        "#FF0000"
-      )
-    );
-  }*/
-
-  handleRectangleClick() {
-    const shape = this.shapeFactory.createRectangle({
-      x: Math.random() * (this.view.canvas.width - 100),
-      y: Math.random() * (this.view.canvas.height - 100),
-      width: 100,
-      height: 100,
-      color: "#FF0000",
-    });
-    this.addShape(shape);
+  /*addButtonObserver(observer) {
+    this.buttonObservers.push(observer);
   }
 
-  handleEllipseClick() {
-    const shape = this.shapeFactory.createEllipse({
+  notifyButtonObservers(event) {
+    this.buttonObservers.forEach((observer) => {
+      observer.update(event);
+    });
+  }*/
+
+  initializeButtons() {
+    const rectangleButton = document.getElementById("drawRectangle");
+    const EllipseButton = document.getElementById("drawEllipse");
+    const lineButton = document.getElementById("drawLine");
+    //const TextButton = document.getElementById("drawText");
+
+    rectangleButton.addEventListener(
+      "click",
+      this.handleRectangleClick.bind(this)
+    );
+    EllipseButton.addEventListener("click", this.handleEllipseClick.bind(this));
+    lineButton.addEventListener("click", this.handleLineClick.bind(this));
+    //TextButton.addEventListener("click", this.handleTextClick.bind(this, "text"));
+  }
+
+  handleRectangleClick(event) {
+    const addRectangleCommand = new AddRectangleCommand(
+      this,
+      this.shapeFactory,
+      {
+        x: Math.random() * (this.view.canvas.width - 100),
+        y: Math.random() * (this.view.canvas.height - 100),
+        width: 100,
+        height: 100,
+        color: "#FF0000",
+      }
+    );
+
+    addRectangleCommand.execute();
+    this.commandStack.push(addRectangleCommand);
+    console.log(this.commandStack);
+  }
+
+  handleEllipseClick(event) {
+    const addEllipseCommand = new AddEllipseCommand(this, this.shapeFactory, {
       x: Math.random() * (this.view.canvas.width - 100),
       y: Math.random() * (this.view.canvas.height - 100),
       width: 100,
@@ -363,17 +381,20 @@ class DrawingController {
       color: "#0000FF",
     });
 
-    this.addShape(shape);
+    addEllipseCommand.execute();
+    this.commandStack.push(addEllipseCommand);
   }
 
-  handleLineClick() {
-    const shape = this.shapeFactory.createLine({
+  handleLineClick(event) {
+    const addLineCommand = new AddLineCommand(this, this.shapeFactory, {
       x: Math.random() * (this.view.canvas.width - 100),
       y: Math.random() * (this.view.canvas.height - 100),
       length: 200,
       color: "#000000",
     });
-    this.addShape(shape);
+
+    addLineCommand.execute();
+    this.commandStack.push(addLineCommand);
   }
 
   /*handleTextClick() {
@@ -387,12 +408,6 @@ class DrawingController {
         )
       );
     }*/
-
-  addShape(shape) {
-    shape.zOrder = this.shapes.length;
-    this.shapes.push(shape);
-    this.draw();
-  }
 
   draw() {
     this.view.clearCanvas();
@@ -409,16 +424,12 @@ class DrawingController {
     });
   }
 
-  executeCommand(command) {
-    command.execute();
-    this.commandStack.push(command);
-  }
-
   //command
   undo() {
     if (this.commandStack.length > 0) {
       const lastCommand = this.commandStack.pop();
       lastCommand.undo();
+      console.log(this.commandStack);
       this.draw();
     }
   }
