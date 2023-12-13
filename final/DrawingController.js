@@ -402,8 +402,9 @@ class DrawingController {
     const addTextCommand = new AddTextCommand(this, this.shapeFactory, {
       x: Math.random() * (this.view.canvas.width - 100),
       y: Math.random() * (this.view.canvas.height - 100),
+      width: 100,
+      height: 100,
       text: "text",
-      fontSize: 30,
       color: "#00FF00",
     });
 

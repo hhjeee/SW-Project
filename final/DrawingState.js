@@ -198,20 +198,25 @@ class Line extends Shape {
 }
 
 class Text extends Shape {
-  constructor(x, y, text, fontSize, color) {
-    super(x, y, 0, 0, color);
+  constructor(x, y, width, height, text, color) {
+    super(x, y, width, height, text, color);
+    this.width = this.width;
+    this.height = this.height;
     this.text = text;
-    this.fontSize = fontSize;
+    this.color = color;
+  }
+  
+  calculateFontSize() {
+    // 경계 박스에 맞는 폰트 크기를 계산합니다.
+    // 이는 예시일 뿐, 실제로 적절한 로직이 필요합니다.
+    return Math.min(this.width, this.height);
   }
 
-  calculateTextWidth() {
-    const metrics = this.context.measureText(this.text);
-    return metrics.width;
-  }
 
   draw(context) {
+    context.textBaseline = 'top'; // 이렇게 설정하면 y 좌표가 텍스트의 상단을 가리킵니다.
     context.fillStyle = this.color;
-    context.font = this.fontSize + "px Arial";
+    context.font = this.calculateFontSize() + "px Arial";
     context.fillText(this.text, this.x, this.y);
   }
 

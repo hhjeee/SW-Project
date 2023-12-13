@@ -84,6 +84,7 @@ class AddTextCommand extends Command {
 
   execute() {
     this.addedShape = this.shapeFactory.createText(this.shapeParams);
+    console.log(this.addedShape.x);
     this.addedShape.zOrder = this.controller.shapes.length;
     this.controller.shapes.push(this.addedShape);
     this.controller.draw();
