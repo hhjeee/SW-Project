@@ -19,6 +19,10 @@ class DrawingController {
     this.shapeFactory = new ConcreteShapeFactory();
     this.compositeShape = new CompositeShape();
 
+    this.propertyPanel = new PropertiesPanel();
+    this.observingShape = new Observable();
+    /*observingShape는 Composite 패턴을 인자로 받을 것임. */
+
     this.commandStack = [];
 
     this.moveToFrontCommand;
@@ -34,8 +38,6 @@ class DrawingController {
 
     this.MoveCommand;
     this.ResizeCommand;
-
-    this.buttonObservers = [];
 
     const undoButton = document.getElementById("undoButton");
     undoButton.addEventListener("click", () => this.undo());
@@ -74,6 +76,8 @@ class DrawingController {
 
   setupMouseEvents() {
     this.view.canvas.addEventListener("mousedown", (event) => {
+      
+      this.observingShape.observers = [this.propertyPanel];
       const handle = this.findResizeHandle(event);
       console.log(handle);
       if (handle) {
@@ -85,7 +89,9 @@ class DrawingController {
         );
       } else {
         const shape = this.findShape(event);
-
+        if (shape == null){
+          this.switchToDefaultState();
+        }
         if (event.shiftKey && shape) {
           // Shift 키가 눌려있으면 멀티-셀렉트 수행
           const index = this.compositeShape.children.indexOf(shape);
@@ -98,19 +104,21 @@ class DrawingController {
           const index = this.compositeShape.children.indexOf(shape);
 
           if (index === -1) {
-            // Shift 키가 눌려있지 않으면 단일 선택
             this.compositeShape.children = shape ? [shape] : [];
           } else {
           }
         }
         this.mouseState.onMouseDown(event, this.compositeShape.children);
+        
+        console.log(this.mouseState);
+        this.observingShape.notify(this.compositeShape.children);
       }
     });
 
     this.view.canvas.addEventListener("mousemove", (event) => {
       this.mouseState.onMouseMove(event);
+      this.observingShape.notify(this.compositeShape.children);
     });
-
     this.view.canvas.addEventListener("mouseup", (event) => {
       this.mouseState.onMouseUp(event);
 
@@ -402,8 +410,8 @@ class DrawingController {
     const addTextCommand = new AddTextCommand(this, this.shapeFactory, {
       x: Math.random() * (this.view.canvas.width - 100),
       y: Math.random() * (this.view.canvas.height - 100),
-      width: 100,
-      height: 100,
+      width: 150,
+      height: 90,
       text: "text",
       color: "#00FF00",
     });

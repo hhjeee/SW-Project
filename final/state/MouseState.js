@@ -4,7 +4,7 @@ class MouseState {
   }
 
   onMouseDown(event, selectedShapes) {
-    if (selectedShapes) {
+    if (selectedShapes != [] || selectedShapes != null) {
       this.controller.selectedShapes = selectedShapes;
       this.controller.switchToSelectState();
       this.controller.mouseState.onMouseDown(event, selectedShapes);
