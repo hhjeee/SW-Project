@@ -3,7 +3,7 @@ class ShapeFactory {
   createRectangle(x, y, width, height, color) {}
   createEllipse(x, y, width, height, color) {}
   createLine(x, y, length, color) {}
-  //createText(x, y, text, fontSize, color) {}
+  createText(x, y, text, fontSize, color) {}
 }
 
 // Concrete Factory
@@ -23,8 +23,8 @@ class ConcreteShapeFactory extends ShapeFactory {
     return new Line(x, y, length, color);
   }
 
-  /*createText(config) {
-    const {x, y, text, fontSize, color} = config;
+  createText(config) {
+    const { x, y, text, fontSize, color } = config;
     return new Text(x, y, text, fontSize, color);
-  }*/
+  }
 }

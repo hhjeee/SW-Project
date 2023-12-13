@@ -197,7 +197,6 @@ class DrawingController {
     const xCoordinateInput = document.getElementById("xCoordinate");
     const yCoordinateInput = document.getElementById("yCoordinate");
     const color = document.getElementById("colorPicker");
-    //const zOrder = document.getElementById("Zorder");
 
     const selectedShapes = this.compositeShape.children;
 
@@ -345,7 +344,7 @@ class DrawingController {
     const rectangleButton = document.getElementById("drawRectangle");
     const EllipseButton = document.getElementById("drawEllipse");
     const lineButton = document.getElementById("drawLine");
-    //const TextButton = document.getElementById("drawText");
+    const TextButton = document.getElementById("drawText");
 
     rectangleButton.addEventListener(
       "click",
@@ -353,7 +352,7 @@ class DrawingController {
     );
     EllipseButton.addEventListener("click", this.handleEllipseClick.bind(this));
     lineButton.addEventListener("click", this.handleLineClick.bind(this));
-    //TextButton.addEventListener("click", this.handleTextClick.bind(this, "text"));
+    TextButton.addEventListener("click", this.handleTextClick.bind(this));
   }
 
   handleRectangleClick(event) {
@@ -399,17 +398,18 @@ class DrawingController {
     this.commandStack.push(addLineCommand);
   }
 
-  /*handleTextClick() {
-      this.addShape(
-        new Text(
-          Math.random() * (this.view.canvas.width - 100),
-          Math.random() * (this.view.canvas.height - 100),
-          "Text",
-          30,
-          "#00FF00"
-        )
-      );
-    }*/
+  handleTextClick(event) {
+    const addTextCommand = new AddTextCommand(this, this.shapeFactory, {
+      x: Math.random() * (this.view.canvas.width - 100),
+      y: Math.random() * (this.view.canvas.height - 100),
+      text: "text",
+      fontSize: 30,
+      color: "#00FF00",
+    });
+
+    addTextCommand.execute();
+    this.commandStack.push(addTextCommand);
+  }
 
   draw() {
     this.view.clearCanvas();

@@ -197,7 +197,7 @@ class Line extends Shape {
   }
 }
 
-/*class Text extends Shape {
+class Text extends Shape {
   constructor(x, y, text, fontSize, color) {
     super(x, y, 0, 0, color);
     this.text = text;
@@ -248,4 +248,4 @@ class Line extends Shape {
       y <= this.y + this.height
     );
   }
-}*/
+}
