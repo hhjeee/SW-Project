@@ -12,9 +12,7 @@ DrawingController.prototype.findResizeHandle = function (event) {
 
   selectedShapes.forEach((selectedShape) => {
     // 조절점 위치 계산
-
     if (selectedShape instanceof Ellipse) {
-      // 원의 경우, 각 사분면의 중간 지점에 조절점 표시
       const middleX = selectedShape.x;
       const middleY = selectedShape.y;
 

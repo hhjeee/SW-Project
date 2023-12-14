@@ -35,6 +35,7 @@ class PropertiesPanel extends Observer {
     const yCoordinateInput = document.getElementById("yCoordinate");
     const colorInput = document.getElementById("colorPicker");
 
+    //속성창 값 업데이트는 선택된 도형이 1개일때로 제한
     if (shapes.length !== 1) {
       widthInput.value = "";
       heightInput.value = "";

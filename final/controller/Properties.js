@@ -2,10 +2,10 @@ DrawingController.prototype.changeShapeProperty = function (
   propertyName,
   newValue
 ) {
-  if (this.selectedShapes.length === 1) {
+  for (let i = 0; i < this.selectedShapes.length; i++) {
     const changePropertyCommand = new ChangeShapePropertyCommand(
       this,
-      this.selectedShapes[0],
+      this.selectedShapes[i],
       propertyName,
       newValue
     );

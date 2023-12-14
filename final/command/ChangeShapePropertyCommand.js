@@ -1,4 +1,3 @@
-// ChangeShapePropertyCommand.js
 class ChangeShapePropertyCommand extends Command {
   constructor(controller, shape, propertyName, newValue) {
     super();

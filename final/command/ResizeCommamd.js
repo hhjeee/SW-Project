@@ -1,4 +1,3 @@
-// ResizeCommand.js
 class ResizeCommand extends Command {
   constructor(controller, shapes, handle, dx, dy) {
     super();

@@ -33,7 +33,7 @@ DrawingController.prototype.setupMouseEvents = function () {
         this.switchToDefaultState();
       }
       if (event.shiftKey && shape) {
-        // Shift 키가 눌려있으면 멀티-셀렉트 수행
+        // Shift 키가 눌려있으면 멀티셀렉트 수행
         const index = this.compositeShape.children.indexOf(shape);
         if (index === -1) {
           this.compositeShape.addChild(shape);
